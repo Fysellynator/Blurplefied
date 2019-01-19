@@ -38,7 +38,7 @@ white = (255, 255, 255)
 
 bot.remove_command('help')
 
-allowedusers = {204778476102877187, 226595531844091904, 191602259904167936} #put your user id here, and it will allow you to use the 'hidden' commands (and shutdown command)
+allowedusers = {204778476102877187, 226595531844091904, 191602259904167936, 301493210726006785} #put your user id here, and it will allow you to use the 'hidden' commands (and shutdown command)
 approved_channels = {418987056111550464, 436300339273269278}
 
 def allowed_users():
@@ -52,7 +52,7 @@ async def globally_block_dms(ctx):
 
 @bot.check
 async def only_in_commands_channels(ctx):
-    return ctx.channel.id in approved_channels or ctx.author.id in allowedusers
+    return True
 
 @bot.event
 async def on_connect():
@@ -60,6 +60,7 @@ async def on_connect():
     print('Logged in as')
     print(bot.user.name)
     print(bot.user.id)
+    print("Current Server Count:", (len(bot.guilds)))
     print('------')
     activity = discord.Game(name="Type "+BOT_PREFIX+"help")
     await bot.change_presence(activity=activity)
@@ -101,10 +102,10 @@ async def countdown(ctx):
         d["minutes"], d["seconds"] = divmod(rem, 60)
         return fmt.format(**d)
 
-    timeleft = datetime.datetime(2018, 5, 13) + datetime.timedelta(hours=7) - datetime.datetime.utcnow()
+    timeleft = datetime.datetime(2019, 5, 13) + datetime.timedelta(hours=7) - datetime.datetime.utcnow()
     embed = discord.Embed(name="", colour=0x7289da)
-    embed.set_author(name="Time left until Discord's 3rd Anniversary")
-    embed.add_field(name="Countdown to midnight May 13 California time (UTC-7)", value=(strfdelta(timeleft, "**{days}** days, **{hours}** hours, **{minutes}** minutes, and **{seconds}** seconds")))
+    embed.set_author(name="Time left until Discord's 4th Anniversary")
+    embed.add_field(name="Countdown to midnight on May 13, 2019. [California Time] (UTC-7)", value=(strfdelta(timeleft, "**{days}** days, **{hours}** hours, **{minutes}** minutes, and **{seconds}** seconds")))
     await ctx.send(embed=embed)
 
 @bot.event
@@ -145,7 +146,7 @@ async def timeit(ctx, *, command: str):
     start = time.time()
     await new_ctx.reinvoke()
     end = time.time()
-    
+
     await ctx.send(f'**{BOT_PREFIX}{new_ctx.command.qualified_name}** took **{end - start:.2f}s** to run')
 
 
@@ -231,7 +232,7 @@ async def blurple(ctx, arg1 = None):
         blurple = (114, 137, 218)
         darkblurple = (78, 93, 148)
         white = (255, 255, 255)
-        
+
         img = im.load()
 
         for x in range(imsize[0]):
@@ -268,7 +269,7 @@ async def blurple(ctx, arg1 = None):
         image_file_object.seek(0)
         return image_file_object
 
-    with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         start = time.time()
         image = await bot.loop.run_in_executor(None, imager, im)
         end = time.time()
@@ -360,7 +361,7 @@ async def blurplefy(ctx, arg1 = None):
         isgif = False
 
 
-    
+
 
     end = time.time()
     #await ctx.send(f'{ctx.message.author.display_name}, image fetched, analysing image (This process can sometimes take a while depending on the size of the image) ({end - start:.2f}s)')
@@ -425,7 +426,7 @@ async def blurplefy(ctx, arg1 = None):
         return image_file_object
 
 
-    with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         start = time.time()
         if isgif == False:
             image = await bot.loop.run_in_executor(None, imager, im)
@@ -451,8 +452,8 @@ async def blurplefy(ctx, arg1 = None):
             await ctx.send(embed=embed, file=image)
         except Exception:
             await ctx.send(f"{ctx.author.display.name}, whoops! It looks like this gif is too big to upload. If you want, you can give it another go, except with a smaller version of the image. Sorry about that!")
-
-@bot.command(aliases=['blurplfygif', 'blurplefiergif'])
+#This command isn't needed, the normal blurplefy command now accepts gifs.
+'''@bot.command(aliases=['blurplfygif', 'blurplefiergif'])
 @commands.cooldown(rate=1, per=90, type=BucketType.user)
 @allowed_users()
 async def blurplefygif(ctx, arg1 = None):
@@ -552,7 +553,7 @@ async def blurplefygif(ctx, arg1 = None):
         image_file_object.seek(0)
         return image_file_object
 
-    with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession() as session:
         start = time.time()
         image = await bot.loop.run_in_executor(None, imager, im)
         end = time.time()
@@ -565,7 +566,7 @@ async def blurplefygif(ctx, arg1 = None):
         embed.set_footer(text=f"Please note - This blurplefier is automated and therefore may not always give you the best result. This also currently does not work with gifs. | Content requested by {ctx.author}")
         embed.set_image(url="attachment://image.gif")
         embed.set_thumbnail(url=picture)
-        await ctx.send(embed=embed, file=image)
+        await ctx.send(embed=embed, file=image)'''
 
 '''@bot.command(name='color', aliases=["colour"])
 async def color(ctx, *arg1):
@@ -672,7 +673,7 @@ async def color(ctx, *arg1):
             embed.set_image(url="attachment://image.png")
             embed.set_thumbnail(url=picture)
             await ctx.send(embed=embed, file=image)'''
-
+#comment this back with ''' if there's an issue [there was an issue lmao]
 '''@bot.command(hidden=True)
 async def colortest(ctx):
     link = ctx.message.attachments
